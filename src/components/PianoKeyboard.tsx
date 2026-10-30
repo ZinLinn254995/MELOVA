@@ -122,8 +122,10 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
     const notesToPlay = chord.notes.map((n) => {
       // If note semitone makes it spill into next octave
       const baseOctave = 4;
+      const rootPitchClass = chord.notes[0]?.pitchClass ?? 0;
       const pitchOffset = n.semitoneFromRoot;
-      const oct = baseOctave + Math.floor(pitchOffset / 12);
+      // Include the root pitch class so intervals crossing C advance the octave.
+      const oct = baseOctave + Math.floor((rootPitchClass + pitchOffset) / 12);
       return { pitchClass: n.pitchClass, octave: oct };
     });
     audioEngine.playChord(notesToPlay);
@@ -135,8 +137,10 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
 
     const notesToPlay = chord.notes.map((n) => {
       const baseOctave = 4;
+      const rootPitchClass = chord.notes[0]?.pitchClass ?? 0;
       const pitchOffset = n.semitoneFromRoot;
-      const oct = baseOctave + Math.floor(pitchOffset / 12);
+      // Include the root pitch class so intervals crossing C advance the octave.
+      const oct = baseOctave + Math.floor((rootPitchClass + pitchOffset) / 12);
       return { pitchClass: n.pitchClass, octave: oct };
     });
 
