@@ -71,6 +71,10 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
       pitchClass: n.pitchClass,
       octave: 2 + Math.floor((getPitchClass(chord.root) + n.semitoneFromRoot) / 12),
     }));
+    // Keep the UI in sync because playChord stops an active groove without
+    // invoking the groove completion callback.
+    setIsGrooving(false);
+    setActiveGrooveIndex(null);
     audioEngine.playChord(notesToPlay, 1.8, 'bass');
   };
 
