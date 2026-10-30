@@ -182,7 +182,7 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
           className="relative min-w-[760px] bg-gradient-to-r from-stone-900 via-stone-850 to-stone-900 rounded-xl p-4 sm:p-5 border-2 border-stone-800 shadow-2xl"
         >
           {/* Fret Numbers Header */}
-          <div className="grid grid-cols-[60px_repeat(15,1fr)] gap-0 mb-2">
+          <div className="grid gap-0 mb-2" style={{ gridTemplateColumns: `60px repeat(${frets.length}, minmax(0, 1fr))` }}>
             <div className="text-[11px] font-bold text-slate-400 text-center flex items-center justify-center">
               Strings
             </div>
@@ -205,7 +205,7 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
               return (
                 <div
                   key={tuning.stringNumber}
-                  className="relative grid grid-cols-[60px_repeat(15,1fr)] items-center h-12 group"
+                  className="relative grid items-center h-12 group" style={{ gridTemplateColumns: `60px repeat(${frets.length}, minmax(0, 1fr))` }}
                 >
                   {/* String Tuning Indicator on Headstock */}
                   <div className="flex items-center justify-between pr-2 border-r-4 border-amber-200/40">
