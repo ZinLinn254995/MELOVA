@@ -6,6 +6,13 @@ class MultiInstrumentAudioEngine {
   private volume: number = 0.75;
   private isMuted: boolean = false;
   private arpeggioTimer: number | null = null;
+  private scheduledTimers = new Set<number>();
+  private activeVoices = new Set<{
+    oscillators: OscillatorNode[];
+    gain: GainNode;
+    filter: BiquadFilterNode;
+    cleanupTimer: number;
+  }>();
 
   constructor() {
     // AudioContext will be initialized on first user interaction
@@ -181,15 +188,23 @@ class MultiInstrumentAudioEngine {
     filter.connect(voiceGain);
     voiceGain.connect(this.masterGain);
 
-    setTimeout(() => {
+    const voice = {
+      oscillators: oscs,
+      gain: voiceGain,
+      filter,
+      cleanupTimer: 0,
+    };
+    voice.cleanupTimer = window.setTimeout(() => {
+      this.activeVoices.delete(voice);
       try {
         oscs.forEach((o) => o.disconnect());
         voiceGain.disconnect();
         filter.disconnect();
       } catch {
-        // cleanup safe
+        // Nodes may already be disconnected during stopPlayback.
       }
-    }, (durationSec + 0.2) * 1000);
+    }, (durationSec * (instrument === 'bass' ? 1.3 : 1) + 0.3) * 1000);
+    this.activeVoices.add(voice);
   }
 
   // Play full chord simultaneously
@@ -215,9 +230,11 @@ class MultiInstrumentAudioEngine {
 
     const playedNotes = stringsNotes.filter((n): n is { pitchClass: number; octave: number } => n !== null);
     playedNotes.forEach((note, idx) => {
-      window.setTimeout(() => {
+      const timer = window.setTimeout(() => {
+        this.scheduledTimers.delete(timer);
         this.playNote(note.pitchClass, note.octave, 2.2, 'guitar');
       }, idx * strokeDelayMs);
+      this.scheduledTimers.add(timer);
     });
   }
 
@@ -289,6 +306,33 @@ class MultiInstrumentAudioEngine {
       clearTimeout(this.arpeggioTimer);
       this.arpeggioTimer = null;
     }
+
+    this.scheduledTimers.forEach((timer) => window.clearTimeout(timer));
+    this.scheduledTimers.clear();
+
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    this.activeVoices.forEach((voice) => {
+      window.clearTimeout(voice.cleanupTimer);
+      try {
+        voice.gain.gain.cancelScheduledValues(now);
+        voice.gain.gain.setValueAtTime(Math.max(voice.gain.gain.value, 0.0001), now);
+        voice.gain.gain.linearRampToValueAtTime(0.0001, now + 0.015);
+        voice.oscillators.forEach((osc) => {
+          try {
+            osc.stop(now + 0.02);
+          } catch {
+            // Oscillator may already have stopped.
+          }
+          osc.disconnect();
+        });
+        voice.gain.disconnect();
+        voice.filter.disconnect();
+      } catch {
+        // Ignore nodes already stopped or disconnected.
+      }
+    });
+    this.activeVoices.clear();
   }
 }
 
