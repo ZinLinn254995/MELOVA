@@ -364,7 +364,7 @@ export function getBassArpeggioPattern(chord: CalculatedChord): BassArpeggioPatt
   // Find root on String 4 (Low E) between frets 1 and 12
   let rootString = 4;
   let rootFret = (rootPitch - 4 + 12) % 12;
-  if (rootFret === 0) rootFret = 12; // place at fret 12 or fret 0
+  // Keep open E at fret 0; moving it to fret 12 creates an unnecessarily high box.
 
   // If root fret is too high (> 7), place on String 3 (A string)
   if (rootFret > 7) {
