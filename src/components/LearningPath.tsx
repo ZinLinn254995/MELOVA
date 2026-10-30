@@ -93,7 +93,7 @@ export const LearningPath: React.FC<LearningPathProps> = ({
   };
 
   const completeLesson = () => {
-    if (!activeLesson || completedIds.includes(activeLesson.id)) return;
+    if (!activeLesson || completedIds.includes(activeLesson.id) || !answerChecked || selectedAnswer !== activeLesson.correctIndex) return;
     setProgress((current) => ({
       ...current,
       [instrument]: [...(current[instrument] ?? []), activeLesson.id],
@@ -112,8 +112,6 @@ export const LearningPath: React.FC<LearningPathProps> = ({
     setSelectedAnswer(null);
     setAnswerChecked(false);
   };
-
-  const Icon = instrument === 'guitar' ? Guitar : instrument === 'bass' ? Music2 : Piano;
 
   return (
     <section className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors dark:border-slate-800 dark:bg-slate-900">
@@ -333,16 +331,16 @@ export const LearningPath: React.FC<LearningPathProps> = ({
                 <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
                   <button
                     type="button"
-                    onClick={() => setAnswerChecked(true)}
-                    disabled={selectedAnswer === null || answerChecked}
+                    onClick={() => { if (answerChecked && selectedAnswer !== activeLesson.correctIndex) { setSelectedAnswer(null); setAnswerChecked(false); } else { setAnswerChecked(true); } }}
+                    disabled={selectedAnswer === null || (answerChecked && selectedAnswer === activeLesson.correctIndex)}
                     className="rounded-lg bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
                   >
-                    {isMy ? 'အဖြေစစ်ဆေးမည်' : 'Check answer'}
+                    {answerChecked && selectedAnswer !== activeLesson.correctIndex ? (isMy ? 'ထပ်မံဖြေဆိုမည်' : 'Try again') : (isMy ? 'အဖြေစစ်ဆေးမည်' : 'Check answer')}
                   </button>
                   <button
                     type="button"
                     onClick={completeLesson}
-                    disabled={!completedIds.includes(activeLesson.id) && !answerChecked}
+                    disabled={!completedIds.includes(activeLesson.id) && (!answerChecked || selectedAnswer !== activeLesson.correctIndex)}
                     className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <CheckCircle2 className="h-4 w-4" />
