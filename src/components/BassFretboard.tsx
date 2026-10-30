@@ -252,7 +252,7 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
                       activeStepPitchClass !== null &&
                       noteInfo.pitchClass === activeStepPitchClass;
 
-                    const keyId = `${strIdx}-${fret}`;
+                    const keyId = `${tuningIndex}-${fret}`;
                     const isPlucked = pluckedNote === keyId;
 
                     const showBadge =
@@ -261,14 +261,14 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
                     return (
                       <div
                         key={fret}
-                        onClick={() => handlePlayFretNote(strIdx, fret)}
+                        onClick={() => handlePlayFretNote(tuningIndex, fret)}
                         className={`relative h-12 flex items-center justify-center border-r border-stone-600/60 cursor-pointer transition-transform ${
                           fret === 0 ? 'bg-amber-950/40 border-r-4 border-amber-300/40' : ''
                         } ${isPlucked ? 'scale-110' : 'hover:bg-white/5'}`}
                         title={`${tuning.stringNumber}th String, Fret ${fret}: ${noteInfo.noteName}${noteInfo.octave}`}
                       >
                         {/* Fret Markers on wood neck */}
-                        {strIdx === 1 && FRET_MARKERS.includes(fret) && (
+                        {visualIndex === 1 && FRET_MARKERS.includes(fret) && (
                           <div
                             className={`absolute pointer-events-none w-2.5 h-2.5 rounded-full ${
                               fret === 12
@@ -277,7 +277,7 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
                             }`}
                           />
                         )}
-                        {strIdx === 2 && fret === 12 && (
+                        {visualIndex === 2 && fret === 12 && (
                           <div className="absolute pointer-events-none w-2.5 h-2.5 rounded-full bg-amber-200/50 shadow-sm" />
                         )}
 
