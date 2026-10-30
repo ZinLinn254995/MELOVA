@@ -12,6 +12,7 @@ import {
 } from '../utils/fretboardTheory';
 import { audioEngine } from '../utils/audioEngine';
 import { getT } from '../utils/i18n';
+import { getPitchClass } from '../utils/musicTheory';
 import { Play, Music, Radio, Disc } from 'lucide-react';
 
 interface BassFretboardProps {
@@ -68,7 +69,7 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
   const handlePlayChordNotes = () => {
     const notesToPlay = chord.notes.map((n) => ({
       pitchClass: n.pitchClass,
-      octave: 2,
+      octave: 2 + Math.floor((getPitchClass(chord.root) + n.semitoneFromRoot) / 12),
     }));
     audioEngine.playChord(notesToPlay, 1.8, 'bass');
   };
