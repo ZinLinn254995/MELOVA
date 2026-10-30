@@ -190,7 +190,7 @@ export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
           className="relative min-w-[760px] bg-gradient-to-r from-amber-950/70 via-stone-900 to-amber-950/80 rounded-xl p-4 sm:p-5 border-2 border-stone-800 shadow-2xl"
         >
           {/* Fretboard Nut / String status header (O: open, X: unplayed) */}
-          <div className="grid grid-cols-[60px_repeat(15,1fr)] gap-0 mb-2">
+          <div className="grid gap-0 mb-2" style={{ gridTemplateColumns: `60px repeat(${frets.length}, minmax(0, 1fr))` }}>
             {/* String label column header */}
             <div className="text-[10px] font-bold text-slate-400 text-center flex items-center justify-center font-mono">
               1st → 6th
@@ -222,7 +222,8 @@ export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
               return (
                 <div
                   key={stringItem.stringNumber}
-                  className="relative grid grid-cols-[60px_repeat(15,1fr)] items-center h-10 group"
+                  className="relative grid items-center h-10 group"
+                  style={{ gridTemplateColumns: `60px repeat(${frets.length}, minmax(0, 1fr))` }}
                 >
                   {/* String Tuning Indicator on Headstock */}
                   <div className="flex items-center justify-between pr-2 border-r-4 border-amber-200/40">
