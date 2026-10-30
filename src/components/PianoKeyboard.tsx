@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   NoteName,
   CalculatedChord,
@@ -40,6 +40,11 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   const t = getT(lang);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [pressedKey, setPressedKey] = useState<string | null>(null);
+  const pressedKeyTimer = useRef<number | null>(null);
+
+  useEffect(() => () => {
+    if (pressedKeyTimer.current !== null) window.clearTimeout(pressedKeyTimer.current);
+  }, []);
   const [isArpeggiating, setIsArpeggiating] = useState(false);
   const [arpeggiatingIndex, setArpeggiatingIndex] = useState<number | null>(null);
 
@@ -112,8 +117,10 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
     if (onKeyClick) {
       onKeyClick(noteName, octave);
     }
-    setTimeout(() => {
+    if (pressedKeyTimer.current !== null) window.clearTimeout(pressedKeyTimer.current);
+    pressedKeyTimer.current = window.setTimeout(() => {
       setPressedKey(null);
+      pressedKeyTimer.current = null;
     }, 250);
   };
 
