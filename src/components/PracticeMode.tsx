@@ -135,15 +135,19 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({
         chordToPlay: { root: randomRoot, chordType: chosenChordType },
       };
     } else if (chosenType === 'chord_from_notes') {
-      const correctChordName = `${chord.root} ${chord.chordType.nameEn}`;
+      const correctChordNameEn = `${chord.root} ${chord.chordType.nameEn}`;
       const correctChordNameMy = `${chord.root} ${chord.chordType.nameMy}`;
+      const correctChordName = lang === 'my' ? correctChordNameMy : correctChordNameEn;
       const notesList = chord.notes.map((n) => n.noteName).join(', ');
 
       const distractors = new Set<string>();
       while (distractors.size < 3) {
         const otherRoot = CHROMATIC_NOTES[Math.floor(Math.random() * CHROMATIC_NOTES.length)];
         const otherType = chordTypeIds[Math.floor(Math.random() * chordTypeIds.length)];
-        const name = `${otherRoot} ${CHORD_DEFINITIONS[otherType].nameEn}`;
+        const otherName = lang === 'my'
+          ? CHORD_DEFINITIONS[otherType].nameMy
+          : CHORD_DEFINITIONS[otherType].nameEn;
+        const name = `${otherRoot} ${otherName}`;
         if (name !== correctChordName) {
           distractors.add(name);
         }
