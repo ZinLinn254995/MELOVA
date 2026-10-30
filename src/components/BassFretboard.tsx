@@ -196,11 +196,13 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
             ))}
           </div>
 
-          {/* 4 Bass Strings (String 4: Low E, down to String 1: High G) */}
+          {/* 4 Bass Strings: top to bottom = String 1 (High G) to String 4 (Low E) */}
           <div className="space-y-4 relative py-1">
-            {BASS_TUNING.map((tuning, strIdx) => {
-              // Heavy bass gauge line thickness (String 4 is heaviest at 6px, String 1 is 3.5px)
-              const stringHeightPx = 6 - strIdx * 0.8;
+            {[...BASS_TUNING].reverse().map((tuning, visualIndex) => {
+              // Keep note calculations tied to the canonical tuning index (String 4 to String 1).
+              const tuningIndex = BASS_TUNING.indexOf(tuning);
+              // The high G string is thinnest at the top; low E is thickest at the bottom.
+              const stringHeightPx = 3.6 + visualIndex * 0.8;
 
               return (
                 <div
@@ -225,7 +227,7 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
 
                   {/* Frets for this bass string */}
                   {frets.map((fret) => {
-                    const noteInfo = getBassFretNote(strIdx, fret);
+                    const noteInfo = getBassFretNote(tuningIndex, fret);
                     const chordTone = chord.notes.find(
                       (n) => n.pitchClass === noteInfo.pitchClass
                     );
