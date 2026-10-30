@@ -1,0 +1,6 @@
+{
+  "name": "Piano Chord Finder",
+  "description": "Interactive piano chord learning app with real-time keyboard visualization, semitone distance counting, audio playback, and bilingual Burmese/English lessons.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
