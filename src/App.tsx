@@ -166,8 +166,8 @@ export default function App() {
             </h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-1.5 max-w-2xl leading-relaxed">
               {lang === 'my'
-                ? 'Piano, Guitar နှင့် Bass တူရိယာ ၃ မျိုးစလုံးအတွက် Chord Note များနှင့် Semitone အကွာအဝေးများကို အလွယ်ကူဆုံး စတင်လေ့လာနိုင်ပါသည်။'
-                : 'Master chord notes, semitone intervals, and fingerings across Piano, Guitar, and Bass with interactive real-time visualizers.'}
+                ? 'Piano၊ Guitar နှင့် Bass တူရိယာများပေါ်တွင် Note များကို လေ့လာပြီး Chord များကို နားလည်ကာ သီချင်းတီးခတ်နိုင်ရန် ရိုးရှင်းစွာ လေ့ကျင့်ပါ။'
+                : 'Learn notes, understand chord patterns, and play music across Piano, Guitar, and Bass with clear interactive guides.'}
             </p>
           </div>
 
@@ -289,8 +289,8 @@ export default function App() {
       <footer className="mt-16 border-t border-slate-200 dark:border-slate-800 py-8 px-4 sm:px-6 bg-white dark:bg-slate-900 transition-colors">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-800 dark:text-slate-200">
-              Chord Finder
+              <span className="font-bold text-slate-800 dark:text-slate-200">
+              MELOVA
             </span>
             <span>·</span>
             <span>

@@ -155,7 +155,7 @@ export const CHORD_DEFINITIONS: Record<ChordTypeId, ChordTypeDefinition> = {
 export const ENHARMONIC_SPELLINGS: Record<string, string[]> = {
   // Major chords
   'C_major': ['C', 'E', 'G'],
-  'C#_major': ['C#', 'F', 'G#'], // beginner friendly (C#, E#, G# in strict classical, F is easily found on keyboard)
+  'C#_major': ['C#', 'E#', 'G#'],
   'D_major': ['D', 'F#', 'A'],
   'D#_major': ['Eb', 'G', 'Bb'],
   'E_major': ['E', 'G#', 'B'],
@@ -438,7 +438,8 @@ export function calculateChord(root: NoteName, chordTypeId: ChordTypeId): Calcul
   stepIntervals.forEach((step) => {
     stepsExplanationEn += `Count up ${step.semitones} semitones from ${step.fromNote} to land on ${step.toNote}. `;
   });
-  stepsExplanationEn += `Therefore, ${fullNameEn} = ${noteListBurmese}.`;
+  const noteListEn = notes.map((n) => n.noteName).join(' – ');
+  stepsExplanationEn += `Therefore, ${fullNameEn} = ${noteListEn}.`;
 
   // All octave key pitch classes
   const allOctaveKeyPitches = notes.map((n) => n.pitchClass);

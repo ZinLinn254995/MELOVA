@@ -1,8 +1,7 @@
 import React from 'react';
 import { Language } from '../types/music';
 import { getT } from '../utils/i18n';
-import { Sun, Moon, Piano, Volume2, VolumeX } from 'lucide-react';
-import { audioEngine } from '../utils/audioEngine';
+import { Sun, Moon, Music2, Volume2, VolumeX } from 'lucide-react';
 
 interface HeaderProps {
   lang: Language;
@@ -36,9 +35,9 @@ export const Header: React.FC<HeaderProps> = ({
           className="flex items-center gap-2 text-slate-900 dark:text-white font-bold text-base sm:text-lg tracking-tight whitespace-nowrap shrink-0"
         >
           <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-sm">
-            <span className="text-sm sm:text-base">🎵</span>
+            <Music2 className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
           </div>
-          <span>Chord Finder</span>
+          <span>MELOVA</span>
         </a>
 
         {/* Zone 2: Navigation links on wide desktop (xl: >= 1280px) */}
