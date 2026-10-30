@@ -5,7 +5,6 @@ import {
   DisplayMode,
 } from '../types/music';
 import {
-  GUITAR_TUNING,
   FRET_MARKERS,
   getGuitarFretNote,
   getGuitarChordVoicing,
@@ -20,6 +19,17 @@ interface GuitarFretboardProps {
   lang: Language;
   activeStepPitchClass: number | null;
 }
+
+// Standard guitar tablature / bar chord string ordering:
+// String 1 (High e) at the top down to String 6 (Low E) at the bottom
+const GUITAR_STRINGS_DISPLAY = [
+  { stringNumber: 1, stringIndex: 5, openNote: 'e', openOctave: 4 },
+  { stringNumber: 2, stringIndex: 4, openNote: 'B', openOctave: 3 },
+  { stringNumber: 3, stringIndex: 3, openNote: 'G', openOctave: 3 },
+  { stringNumber: 4, stringIndex: 2, openNote: 'D', openOctave: 3 },
+  { stringNumber: 5, stringIndex: 1, openNote: 'A', openOctave: 2 },
+  { stringNumber: 6, stringIndex: 0, openNote: 'E', openOctave: 2 },
+];
 
 export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
   chord,
@@ -90,7 +100,7 @@ export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
             </span>
             <span className="text-slate-500">·</span>
             <span className="text-xs text-slate-400 font-mono">
-              Standard Tuning (EADGBE)
+              Tab Order (1:e · 2:B · 3:G · 4:D · 5:A · 6:E)
             </span>
           </div>
           <div className="flex flex-wrap items-baseline gap-2 sm:gap-3 mt-1">
@@ -182,8 +192,8 @@ export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
           {/* Fretboard Nut / String status header (O: open, X: unplayed) */}
           <div className="grid grid-cols-[60px_repeat(15,1fr)] gap-0 mb-2">
             {/* String label column header */}
-            <div className="text-[11px] font-bold text-slate-400 text-center flex items-center justify-center">
-              Strings
+            <div className="text-[10px] font-bold text-slate-400 text-center flex items-center justify-center font-mono">
+              1st → 6th
             </div>
             {/* Fret numbers (0 to 15) */}
             {frets.map((fret) => (
@@ -196,28 +206,31 @@ export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
             ))}
           </div>
 
-          {/* 6 Guitar Strings */}
+          {/* 6 Guitar Strings (Tab order: 1st string at top to 6th string at bottom) */}
           <div className="space-y-3 relative">
-            {GUITAR_TUNING.map((tuning, strIdx) => {
+            {GUITAR_STRINGS_DISPLAY.map((stringItem, displayIdx) => {
+              const strIdx = stringItem.stringIndex; // 5 (1st string) down to 0 (6th string)
               const chordVoicingFret = voicing.frets[strIdx];
               const isStringMuted = chordVoicingFret === -1;
               const isStringOpen = chordVoicingFret === 0;
 
-              // String physical gauge thickness (String 6 is thickest, String 1 is thinnest)
-              const stringHeightPx = 4 - strIdx * 0.5;
+              // String physical gauge thickness:
+              // String 1 (top) is the thinnest (~1.6px)
+              // String 6 (bottom) is the thickest wound string (~4.6px)
+              const stringHeightPx = 1.6 + (stringItem.stringNumber - 1) * 0.6;
 
               return (
                 <div
-                  key={tuning.stringNumber}
+                  key={stringItem.stringNumber}
                   className="relative grid grid-cols-[60px_repeat(15,1fr)] items-center h-10 group"
                 >
                   {/* String Tuning Indicator on Headstock */}
                   <div className="flex items-center justify-between pr-2 border-r-4 border-amber-200/40">
                     <span className="w-5 h-5 rounded-full bg-slate-800 text-[10px] font-mono font-bold flex items-center justify-center text-slate-300">
-                      {tuning.stringNumber}
+                      {stringItem.stringNumber}
                     </span>
                     <span className="font-bold text-xs text-amber-300 font-mono">
-                      {tuning.openNote}
+                      {stringItem.openNote}
                     </span>
                     {/* Voicing indicator icon: O or X */}
                     {viewMode === 'chart' && (
@@ -275,10 +288,10 @@ export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
                         className={`relative h-10 flex items-center justify-center border-r border-stone-600/60 cursor-pointer transition-transform ${
                           fret === 0 ? 'bg-amber-950/40 border-r-4 border-amber-300/40' : ''
                         } ${isPlucked ? 'scale-110' : 'hover:bg-white/5'}`}
-                        title={`${tuning.stringNumber}th String, Fret ${fret}: ${noteInfo.noteName}${noteInfo.octave}`}
+                        title={`${stringItem.stringNumber}th String (${stringItem.openNote}), Fret ${fret}: ${noteInfo.noteName}${noteInfo.octave}`}
                       >
-                        {/* Fret Marker Dots on wood neck */}
-                        {strIdx === 2 && FRET_MARKERS.includes(fret) && (
+                        {/* Fret Marker Dots on wood neck (placed in the middle of neck: strings 3 and 4) */}
+                        {displayIdx === 2 && FRET_MARKERS.includes(fret) && (
                           <div
                             className={`absolute pointer-events-none w-2 h-2 rounded-full ${
                               fret === 12
@@ -287,7 +300,7 @@ export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
                             }`}
                           />
                         )}
-                        {strIdx === 3 && fret === 12 && (
+                        {displayIdx === 3 && fret === 12 && (
                           <div className="absolute pointer-events-none w-2 h-2 rounded-full bg-amber-200/40 shadow-sm" />
                         )}
 
