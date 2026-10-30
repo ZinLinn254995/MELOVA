@@ -67,6 +67,12 @@ export const Header: React.FC<HeaderProps> = ({
             {lang === 'my' ? 'သင်ခန်းစာများ' : 'Courses'}
           </a>
           <a
+            href="#interactive-practice-section"
+            className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap shrink-0"
+          >
+            {lang === 'my' ? 'လက်တွေ့လေ့ကျင့်ရန်' : 'Practice Studio'}
+          </a>
+          <a
             href="#reference-section"
             className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap shrink-0"
           >
