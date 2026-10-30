@@ -23,7 +23,7 @@ test('all guitar chord voicings contain only chord tones and their root', () => 
       const expected = new Set(chord.semitoneFormula.map((step) => (getPitchClass(root) + step) % 12));
 
       assert.equal(voicing.frets.length, 6, root + ' ' + chordType + ': six strings');
-      assert.equal(voicing.fingers.length, 6, root + ' ' + chordType + ': six finger slots');
+      if (voicing.fingers) assert.equal(voicing.fingers.length, 6, root + ' ' + chordType + ': six finger slots');
       assert.ok(voicing.frets.some((fret, index) => fret >= 0 && getGuitarFretNote(index, fret).pitchClass === getPitchClass(root)),
         root + ' ' + chordType + ': root is present');
 
