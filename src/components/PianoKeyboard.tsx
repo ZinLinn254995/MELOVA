@@ -269,7 +269,8 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                 isArpeggiating &&
                 arpeggiatingIndex !== null &&
                 chord.notes[arpeggiatingIndex]?.pitchClass === k.pitchClass &&
-                k.octave === 4;
+                chord.notes[arpeggiatingIndex] &&
+                4 + Math.floor(((chord.notes[0]?.pitchClass ?? 0) + chord.notes[arpeggiatingIndex].semitoneFromRoot) / 12) === k.octave;
 
               let bgStyle = 'bg-gradient-to-b from-slate-100 to-white text-slate-800';
               if (isStepActive) {
@@ -339,7 +340,8 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                 isArpeggiating &&
                 arpeggiatingIndex !== null &&
                 chord.notes[arpeggiatingIndex]?.pitchClass === b.pitchClass &&
-                b.octave === 4;
+                chord.notes[arpeggiatingIndex] &&
+                4 + Math.floor(((chord.notes[0]?.pitchClass ?? 0) + chord.notes[arpeggiatingIndex].semitoneFromRoot) / 12) === b.octave;
 
               // Position: centered over boundary of whiteKeyIndex
               // Left coordinate = (whiteIndex * whiteKeyWidthPx) - (blackKeyWidthPx / 2)
