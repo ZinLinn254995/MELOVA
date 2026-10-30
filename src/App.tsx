@@ -23,6 +23,7 @@ import { SemitoneVisualizer } from './components/SemitoneVisualizer';
 import { BeginnerLessonPanel } from './components/BeginnerLessonPanel';
 import { LearningPath } from './components/LearningPath';
 import { PracticeStudio } from './components/PracticeStudio';
+import { ScalePractice } from './components/ScalePractice';
 import { ChordReferenceTable } from './components/ChordReferenceTable';
 import { PracticeMode } from './components/PracticeMode';
 import { Sparkles, Music, BookOpen, Layers } from 'lucide-react';
@@ -275,7 +276,12 @@ export default function App() {
           <PracticeStudio instrument={selectedInstrument} lang={lang} />
         </section>
 
-        {/* 7. Chord Reference Tables (7 Natural Majors + All 12 Roots) */}
+        {/* 7. Major and natural minor scale practice */}
+        <section id="scale-practice-section" aria-label="Scale practice">
+          <ScalePractice instrument={selectedInstrument} lang={lang} />
+        </section>
+
+        {/* 8. Chord Reference Tables (7 Natural Majors + All 12 Roots) */}
         <section id="reference-section" aria-label="Chord reference tables">
           <ChordReferenceTable
             selectedInstrument={selectedInstrument}
@@ -286,7 +292,7 @@ export default function App() {
           />
         </section>
 
-        {/* 8. Practice & Self-Test Mode */}
+        {/* 9. Practice & Self-Test Mode */}
         <section id="practice-section" aria-label="Practice and self-test mode">
           <PracticeMode
             selectedInstrument={selectedInstrument}
