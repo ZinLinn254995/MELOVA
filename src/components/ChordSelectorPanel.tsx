@@ -59,13 +59,16 @@ export const ChordSelectorPanel: React.FC<ChordSelectorPanelProps> = ({
     onInstrumentChange(inst);
     // Preview sound with chosen instrument
     const chord = calculateChord(selectedRoot, selectedChordType);
-    if (inst === 'piano') {
-      audioEngine.playChord(chord.notes.map((n) => ({ pitchClass: n.pitchClass, octave: 4 })), 0.8, 'piano');
-    } else if (inst === 'guitar') {
-      audioEngine.playChord(chord.notes.map((n) => ({ pitchClass: n.pitchClass, octave: 3 })), 0.9, 'guitar');
-    } else {
-      audioEngine.playChord(chord.notes.map((n) => ({ pitchClass: n.pitchClass, octave: 2 })), 1.0, 'bass');
-    }
+    const baseOctave = inst === 'bass' ? 2 : inst === 'guitar' ? 3 : 4;
+    const duration = inst === 'bass' ? 1.0 : inst === 'guitar' ? 0.9 : 0.8;
+    audioEngine.playChord(
+      chord.notes.map((n) => ({
+        pitchClass: n.pitchClass,
+        octave: baseOctave + Math.floor(((chord.notes[0]?.pitchClass ?? 0) + n.semitoneFromRoot) / 12),
+      })),
+      duration,
+      inst
+    );
   };
 
   const handleRootClick = (root: NoteName) => {
@@ -80,9 +83,12 @@ export const ChordSelectorPanel: React.FC<ChordSelectorPanelProps> = ({
     onChordTypeChange(typeId);
     // Quick chord audition
     const chord = calculateChord(selectedRoot, typeId);
-    const oct = selectedInstrument === 'bass' ? 2 : selectedInstrument === 'guitar' ? 3 : 4;
+    const baseOctave = selectedInstrument === 'bass' ? 2 : selectedInstrument === 'guitar' ? 3 : 4;
     audioEngine.playChord(
-      chord.notes.map((n) => ({ pitchClass: n.pitchClass, octave: oct })),
+      chord.notes.map((n) => ({
+        pitchClass: n.pitchClass,
+        octave: baseOctave + Math.floor(((chord.notes[0]?.pitchClass ?? 0) + n.semitoneFromRoot) / 12),
+      })),
       0.8,
       selectedInstrument
     );
