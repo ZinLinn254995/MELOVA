@@ -253,12 +253,12 @@ export const ENHARMONIC_SPELLINGS: Record<string, string[]> = {
 
   // Major 7 chords
   'C_maj7': ['C', 'E', 'G', 'B'],
-  'C#_maj7': ['C#', 'F', 'G#', 'C'],
+  'C#_maj7': ['C#', 'E#', 'G#', 'B#'],
   'D_maj7': ['D', 'F#', 'A', 'C#'],
   'D#_maj7': ['Eb', 'G', 'Bb', 'D'],
   'E_maj7': ['E', 'G#', 'B', 'D#'],
   'F_maj7': ['F', 'A', 'C', 'E'],
-  'F#_maj7': ['F#', 'A#', 'C#', 'F'],
+  'F#_maj7': ['F#', 'A#', 'C#', 'E#'],
   'G_maj7': ['G', 'B', 'D', 'F#'],
   'G#_maj7': ['Ab', 'C', 'Eb', 'G'],
   'A_maj7': ['A', 'C#', 'E', 'G#'],
