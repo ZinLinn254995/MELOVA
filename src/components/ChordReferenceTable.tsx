@@ -36,11 +36,11 @@ export const ChordReferenceTable: React.FC<ChordReferenceTableProps> = ({
   const [selectedFilterType, setSelectedFilterType] = useState<ChordTypeId>('major');
 
   const playInstrumentChord = (chordData: ReturnType<typeof calculateChord>) => {
-    const oct = selectedInstrument === 'bass' ? 2 : selectedInstrument === 'guitar' ? 3 : 4;
+    const baseOctave = selectedInstrument === 'bass' ? 2 : selectedInstrument === 'guitar' ? 3 : 4;
     audioEngine.playChord(
       chordData.notes.map((n) => ({
         pitchClass: n.pitchClass,
-        octave: oct,
+        octave: baseOctave + Math.floor(((chordData.notes[0]?.pitchClass ?? 0) + n.semitoneFromRoot) / 12),
       })),
       1.5,
       selectedInstrument

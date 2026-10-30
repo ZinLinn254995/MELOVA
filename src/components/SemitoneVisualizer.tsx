@@ -75,9 +75,12 @@ export const SemitoneVisualizer: React.FC<SemitoneVisualizerProps> = ({
 
   const playStepSound = (noteName: string, stepNum: number) => {
     const pitch = getPitchClass(noteName);
-    const oct = selectedInstrument === 'bass' ? 2 : selectedInstrument === 'guitar' ? 3 : 4;
-    audioEngine.playNote(pitch, oct, 0.7, selectedInstrument);
-    onStepChange(pitch, oct);
+    const rootPitch = chord.notes[0]?.pitchClass ?? getPitchClass(chord.root);
+    const semitonesFromRoot = (pitch - rootPitch + 12) % 12;
+    const baseOctave = selectedInstrument === 'bass' ? 2 : selectedInstrument === 'guitar' ? 3 : 4;
+    const octave = baseOctave + Math.floor((rootPitch + semitonesFromRoot) / 12);
+    audioEngine.playNote(pitch, octave, 0.7, selectedInstrument);
+    onStepChange(pitch, octave);
   };
 
   const handleStartCounting = () => {
