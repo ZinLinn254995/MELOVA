@@ -59,11 +59,9 @@ export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
       return getGuitarFretNote(strIdx, fret);
     });
 
-    audioEngine.strumGuitar(stringNotes, 42);
-
-    setTimeout(() => {
+    audioEngine.strumGuitar(stringNotes, 42, () => {
       setIsStrumming(false);
-    }, 600);
+    });
   };
 
   // Pluck strings individually

@@ -223,7 +223,8 @@ class MultiInstrumentAudioEngine {
   // Strum guitar chord across strings with a natural human downward pick stroke
   public strumGuitar(
     stringsNotes: Array<{ pitchClass: number; octave: number } | null>,
-    strokeDelayMs: number = 38
+    strokeDelayMs: number = 38,
+    onFinished?: () => void
   ) {
     this.stopPlayback();
     this.initContext();
@@ -236,6 +237,15 @@ class MultiInstrumentAudioEngine {
       }, idx * strokeDelayMs);
       this.scheduledTimers.add(timer);
     });
+
+    const completionDelay = playedNotes.length
+      ? (playedNotes.length - 1) * strokeDelayMs + 2.2 * 1000
+      : 0;
+    const completionTimer = window.setTimeout(() => {
+      this.scheduledTimers.delete(completionTimer);
+      onFinished?.();
+    }, completionDelay);
+    this.scheduledTimers.add(completionTimer);
   }
 
   // Play arpeggio (notes one at a time) with callback for visual animation sync
@@ -258,12 +268,17 @@ class MultiInstrumentAudioEngine {
           onNotePlayed(step);
         }
         step++;
-        this.arpeggioTimer = window.setTimeout(playStep, intervalMs);
+        if (step < notes.length) {
+          this.arpeggioTimer = window.setTimeout(playStep, intervalMs);
+        } else {
+          this.arpeggioTimer = window.setTimeout(() => {
+            this.arpeggioTimer = null;
+            onFinished?.();
+          }, 1.2 * 1000);
+        }
       } else {
         this.arpeggioTimer = null;
-        if (onFinished) {
-          onFinished();
-        }
+        onFinished?.();
       }
     };
 
@@ -289,12 +304,17 @@ class MultiInstrumentAudioEngine {
           onNotePlayed(step);
         }
         step++;
-        this.arpeggioTimer = window.setTimeout(playStep, tempoMs);
+        if (step < notes.length) {
+          this.arpeggioTimer = window.setTimeout(playStep, tempoMs);
+        } else {
+          this.arpeggioTimer = window.setTimeout(() => {
+            this.arpeggioTimer = null;
+            onFinished?.();
+          }, 0.9 * 1.3 * 1000);
+        }
       } else {
         this.arpeggioTimer = null;
-        if (onFinished) {
-          onFinished();
-        }
+        onFinished?.();
       }
     };
 
