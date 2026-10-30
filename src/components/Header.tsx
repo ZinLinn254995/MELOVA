@@ -61,6 +61,12 @@ export const Header: React.FC<HeaderProps> = ({
             {t.navLesson}
           </a>
           <a
+            href="#learning-path-section"
+            className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap shrink-0"
+          >
+            {lang === 'my' ? 'သင်ခန်းစာများ' : 'Courses'}
+          </a>
+          <a
             href="#reference-section"
             className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap shrink-0"
           >

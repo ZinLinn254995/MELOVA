@@ -21,6 +21,7 @@ import { GuitarFretboard } from './components/GuitarFretboard';
 import { BassFretboard } from './components/BassFretboard';
 import { SemitoneVisualizer } from './components/SemitoneVisualizer';
 import { BeginnerLessonPanel } from './components/BeginnerLessonPanel';
+import { LearningPath } from './components/LearningPath';
 import { ChordReferenceTable } from './components/ChordReferenceTable';
 import { PracticeMode } from './components/PracticeMode';
 import { Sparkles, Music, BookOpen, Layers } from 'lucide-react';
@@ -259,7 +260,16 @@ export default function App() {
           <BeginnerLessonPanel chord={calculatedChord} lang={lang} />
         </section>
 
-        {/* 5. Chord Reference Tables (7 Natural Majors + All 12 Roots) */}
+        {/* 5. Structured learning paths for all three instruments */}
+        <section id="learning-path-section" aria-label="Structured learning paths">
+          <LearningPath
+            selectedInstrument={selectedInstrument}
+            onInstrumentChange={handleInstrumentChange}
+            lang={lang}
+          />
+        </section>
+
+        {/* 6. Chord Reference Tables (7 Natural Majors + All 12 Roots) */}
         <section id="reference-section" aria-label="Chord reference tables">
           <ChordReferenceTable
             selectedInstrument={selectedInstrument}
@@ -270,7 +280,7 @@ export default function App() {
           />
         </section>
 
-        {/* 6. Practice & Self-Test Mode */}
+        {/* 7. Practice & Self-Test Mode */}
         <section id="practice-section" aria-label="Practice and self-test mode">
           <PracticeMode
             selectedInstrument={selectedInstrument}
