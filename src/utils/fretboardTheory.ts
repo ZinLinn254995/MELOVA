@@ -306,9 +306,10 @@ export function getGuitarChordVoicing(root: NoteName, chordType: ChordTypeId): G
     return {
       root,
       chordType,
-      frets: [f, -1, f + 1, f + 1, f - 1, -1],
-      fingers: [2, null, 3, 4, 1, null],
-      baseFret: Math.max(1, f - 1),
+      // Movable E-shape maj7: root, fifth, major seventh, major third, fifth, root.
+      frets: [f, f + 2, f + 1, f + 1, f, f],
+      fingers: [1, 3, 2, 4, 1, 1],
+      baseFret: f,
     };
   }
   if (chordType === 'min7') {
