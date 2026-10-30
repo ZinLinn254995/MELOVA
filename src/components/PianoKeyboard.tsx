@@ -128,6 +128,10 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
       const oct = baseOctave + Math.floor((rootPitchClass + pitchOffset) / 12);
       return { pitchClass: n.pitchClass, octave: oct };
     });
+    // Keep the UI in sync because playChord stops any active arpeggio without
+    // invoking the arpeggio completion callback.
+    setIsArpeggiating(false);
+    setArpeggiatingIndex(null);
     audioEngine.playChord(notesToPlay);
   };
 
