@@ -1,9 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { CheckCircle2, CircleHelp, Guitar, Music2, Piano, Play, RotateCcw, Target, Trophy, Volume2 } from 'lucide-react';
+import { CheckCircle2, CircleHelp, Guitar, Music2, Piano, Play, Target, Trophy, Volume2 } from 'lucide-react';
 import { InstrumentType, Language, NoteName } from '../types/music';
 import { audioEngine } from '../utils/audioEngine';
 import { calculateChord } from '../utils/musicTheory';
-import { getBassFretNote, getGuitarFretNote } from '../utils/fretboardTheory';
 import {
   FretboardPosition,
   getFretboardPositions,
@@ -71,13 +70,12 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({ instrument, lang
   );
   const progression = getProgression(progressionKind);
   const currentChord = progression[chordIndex];
-  const noteName = (note: NoteName) => note;
-
   const playNote = (pitchClass: number, octave: number) => {
     audioEngine.playNote(pitchClass, octave, 1.1, instrument);
   };
 
   const chooseNote = (note: NoteName, pitchClass: number, octave: number) => {
+    if (feedback === 'correct') return;
     setAttempts((value) => value + 1);
     playNote(pitchClass, octave);
     if (isCorrectNoteAnswer(target, note)) {
@@ -100,7 +98,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({ instrument, lang
     audioEngine.playChord(
       chord.notes.map((note) => ({ pitchClass: note.pitchClass, octave: instrument === 'bass' ? 2 : 4 })),
       1.6,
-      instrument,
+      instrument === 'bass' ? 2 : instrument === 'guitar' ? 3 : 4,
     );
   };
 
@@ -121,12 +119,12 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({ instrument, lang
 
   const renderFretboardCell = (position: FretboardPosition) => {
     const selected = feedback === 'correct' && position.noteName === target;
-    const wrongSelection = false;
     return (
       <button
         key={position.stringIndex + '-' + position.fret}
         type="button"
         onClick={() => chooseNote(position.noteName, position.pitchClass, position.octave)}
+        disabled={feedback === 'correct'}
         aria-label={`${t.string} ${position.stringNumber}, ${t.fret} ${position.fret}, ${position.noteName}`}
         className={`min-w-0 rounded-md border px-0.5 py-2 text-[10px] sm:text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${selected
           ? 'border-emerald-500 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-200'
@@ -181,7 +179,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({ instrument, lang
               <p className="mb-2 text-xs text-slate-500 dark:text-slate-400">{t.pianoHint}</p>
               <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
                 {NOTE_NAMES.map((note, index) => (
-                  <button key={note} type="button" onClick={() => chooseNote(note, index, 4)} className="min-h-12 rounded-xl border border-slate-200 bg-white px-2 py-3 text-sm font-bold text-slate-700 shadow-sm transition-colors hover:border-indigo-400 hover:bg-indigo-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-indigo-500">{note}</button>
+                  <button key={note} type="button" disabled={feedback === 'correct'} onClick={() => chooseNote(note, index, 4)} className="min-h-12 rounded-xl border border-slate-200 bg-white px-2 py-3 text-sm font-bold text-slate-700 shadow-sm transition-colors hover:border-indigo-400 hover:bg-indigo-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-indigo-500">{note}</button>
                 ))}
               </div>
             </div>
