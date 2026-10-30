@@ -96,9 +96,9 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({ instrument, lang
   const playCurrentChord = () => {
     const chord = calculateChord(currentChord.root, currentChord.quality);
     audioEngine.playChord(
-      chord.notes.map((note) => ({ pitchClass: note.pitchClass, octave: instrument === 'bass' ? 2 : 4 })),
+      chord.notes.map((note) => ({ pitchClass: note.pitchClass, octave: instrument === 'bass' ? 2 : instrument === 'guitar' ? 3 : 4 })),
       1.6,
-      instrument === 'bass' ? 2 : instrument === 'guitar' ? 3 : 4,
+      instrument,
     );
   };
 
@@ -128,7 +128,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({ instrument, lang
         aria-label={`${t.string} ${position.stringNumber}, ${t.fret} ${position.fret}, ${position.noteName}`}
         className={`min-w-0 rounded-md border px-0.5 py-2 text-[10px] sm:text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${selected
           ? 'border-emerald-500 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-200'
-          : 'border-slate-200 bg-white text-slate-600 hover:border-indigo-400 hover:bg-indigo-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-indigo-500'} ${wrongSelection ? 'border-rose-400' : ''}`}
+          : 'border-slate-200 bg-white text-slate-600 hover:border-indigo-400 hover:bg-indigo-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-indigo-500'}`}
       >
         {position.noteName}
       </button>
