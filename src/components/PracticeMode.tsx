@@ -222,9 +222,12 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({
           currentQuestion.chordToPlay.root,
           currentQuestion.chordToPlay.chordType
         );
-        const oct = selectedInstrument === 'bass' ? 2 : selectedInstrument === 'guitar' ? 3 : 4;
+        const baseOctave = selectedInstrument === 'bass' ? 2 : selectedInstrument === 'guitar' ? 3 : 4;
         audioEngine.playChord(
-          c.notes.map((n) => ({ pitchClass: n.pitchClass, octave: oct })),
+          c.notes.map((n) => ({
+            pitchClass: n.pitchClass,
+            octave: baseOctave + Math.floor(((c.notes[0]?.pitchClass ?? 0) + n.semitoneFromRoot) / 12),
+          })),
           1.4,
           selectedInstrument
         );
