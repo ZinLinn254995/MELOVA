@@ -239,18 +239,42 @@ export function getGuitarChordVoicing(root: NoteName, chordType: ChordTypeId): G
         baseFret: f,
       };
     }
-    // Diminished / Augmented
-    return {
-      root,
-      chordType,
-      frets: [-1, f, f + 1, f + 2, f + 1, -1],
-      fingers: [null, 1, 2, 4, 3, null],
-      baseFret: f,
-    };
+    if (chordType === 'diminished') {
+      return {
+        root,
+        chordType,
+        frets: [-1, f, f + 1, f + 2, f + 1, -1],
+        fingers: [null, 1, 2, 4, 3, null],
+        baseFret: f,
+      };
+    }
+    if (chordType === 'augmented' && f >= 3) {
+      // A-string-root augmented triad: root, major 3rd, augmented 5th, octave.
+      // This compact shape stays on positive frets when the A-string root is >= 3.
+      return {
+        root,
+        chordType,
+        frets: [-1, f, f - 1, f - 2, f - 2, -1],
+        fingers: [null, 3, 2, 1, 1, null],
+        baseFret: f - 2,
+      };
+    }
   }
 
   // E-shape barre chord at fretOnString6
   const f = fretOnString6 === 0 ? 12 : fretOnString6;
+
+  if (chordType === 'augmented') {
+    // Low-E-root augmented triad: root, major 3rd, augmented 5th.
+    // Use this fallback when the A-shape would require negative frets.
+    return {
+      root,
+      chordType,
+      frets: [f, f - 1, f - 2, -1, -1, -1],
+      fingers: [3, 2, 1, null, null, null],
+      baseFret: Math.max(1, f - 2),
+    };
+  }
   if (chordType === 'major') {
     return {
       root,
