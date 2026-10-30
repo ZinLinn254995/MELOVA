@@ -2,8 +2,8 @@ import { Language } from '../types/music';
 
 export const translations = {
   my: {
-    appTitle: 'တူရိယာ Chord ရှာဖွေလေ့လာရန်',
-    appSubtitle: 'Piano, Guitar & Bass Chord Notes & Semitone Distance Guide',
+    appTitle: 'MELOVA — Music Learning Studio',
+    appSubtitle: 'Learn Notes. Understand Chords. Play Music.',
     badgeBeginner: 'တူရိယာ ၃ မျိုးသုံး Chord လမ်းညွှန်',
     rootNote: 'အခြေခံ အသံ (Root)',
     chordType: 'Chord အမျိုးအစား',
@@ -116,8 +116,8 @@ export const translations = {
     navPractice: 'လေ့ကျင့်ခန်း',
   },
   en: {
-    appTitle: 'Chord Finder',
-    appSubtitle: 'Interactive Piano, Guitar & Bass Chord & Semitone Guide',
+    appTitle: 'MELOVA — Music Learning Studio',
+    appSubtitle: 'Learn Notes. Understand Chords. Play Music.',
     badgeBeginner: '3-in-1 Instrument Guide',
     rootNote: 'Root Note',
     chordType: 'Chord Type',
