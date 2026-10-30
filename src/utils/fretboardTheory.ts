@@ -76,9 +76,9 @@ const OPEN_GUITAR_VOICINGS: Record<string, { frets: number[]; fingers: (number |
   'C_dom7': { frets: [-1, 3, 2, 3, 1, 0], fingers: [null, 3, 2, 4, 1, null], baseFret: 1 },
   'C_maj7': { frets: [-1, 3, 2, 0, 0, 0], fingers: [null, 3, 2, null, null, null], baseFret: 1 },
   'C_min7': { frets: [-1, 3, 5, 3, 4, 3], fingers: [null, 1, 3, 1, 2, 1], baseFret: 3 },
-  'C_sus2': { frets: [-1, 3, 0, 0, 1, 0], fingers: [null, 3, null, null, 1, null], baseFret: 1 },
-  'C_sus4': { frets: [-1, 3, 3, 0, 1, 0], fingers: [null, 3, 4, null, 1, null], baseFret: 1 },
-  'C_diminished': { frets: [-1, 3, 4, 2, 4, -1], fingers: [null, 2, 3, 1, 4, null], baseFret: 1 },
+  'C_sus2': { frets: [-1, 3, 0, 0, 3, 3], fingers: [null, 3, null, null, 1, null], baseFret: 1 },
+  'C_sus4': { frets: [-1, 3, 3, 0, 1, 1], fingers: [null, 3, 4, null, 1, null], baseFret: 1 },
+  'C_diminished': { frets: [-1, 3, 4, -1, 4, -1], fingers: [null, 2, 3, 1, 4, null], baseFret: 1 },
   'C_augmented': { frets: [-1, 3, 2, 1, 1, 0], fingers: [null, 3, 2, 1, 1, null], baseFret: 1 },
 
   // D Chords
@@ -111,7 +111,7 @@ const OPEN_GUITAR_VOICINGS: Record<string, { frets: number[]; fingers: (number |
   'F_min7': { frets: [1, 3, 1, 1, 1, 1], fingers: [1, 3, 1, 1, 1, 1], baseFret: 1 },
   'F_sus2': { frets: [-1, -1, 3, 0, 1, 1], fingers: [null, null, 3, null, 1, 1], baseFret: 1 },
   'F_sus4': { frets: [1, 3, 3, 3, 1, 1], fingers: [1, 2, 3, 4, 1, 1], baseFret: 1 },
-  'F_diminished': { frets: [-1, -1, 3, 4, 3, 4], fingers: [null, null, 1, 3, 2, 4], baseFret: 1 },
+  'F_diminished': { frets: [-1, -1, 3, 1, 0, -1], fingers: [null, null, 1, 3, 2, 4], baseFret: 1 },
   'F_augmented': { frets: [-1, -1, 3, 2, 2, 1], fingers: [null, null, 4, 2, 3, 1], baseFret: 1 },
 
   // G Chords
@@ -121,7 +121,7 @@ const OPEN_GUITAR_VOICINGS: Record<string, { frets: number[]; fingers: (number |
   'G_maj7': { frets: [3, 2, 0, 0, 0, 2], fingers: [2, 1, null, null, null, 3], baseFret: 1 },
   'G_min7': { frets: [3, 5, 3, 3, 3, 3], fingers: [1, 3, 1, 1, 1, 1], baseFret: 3 },
   'G_sus2': { frets: [3, 0, 0, 0, 3, 3], fingers: [1, null, null, null, 2, 3], baseFret: 1 },
-  'G_sus4': { frets: [3, 2, 0, 0, 1, 3], fingers: [3, 2, null, null, 1, 4], baseFret: 1 },
+  'G_sus4': { frets: [3, 3, 0, 0, 1, 3], fingers: [3, 2, null, null, 1, 4], baseFret: 1 },
   'G_diminished': { frets: [3, 4, 5, 3, -1, -1], fingers: [1, 2, 3, 1, null, null], baseFret: 3 },
   'G_augmented': { frets: [3, 2, 1, 0, 0, 3], fingers: [3, 2, 1, null, null, 4], baseFret: 1 },
 
