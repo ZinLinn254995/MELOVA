@@ -196,7 +196,9 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({
 
   useEffect(() => {
     setCurrentQuestion(generateNewQuestion());
-  }, []);
+    setSelectedOption(null);
+    setIsAnswerSubmitted(false);
+  }, [lang]);
 
   const handleSelectOption = (index: number) => {
     if (isAnswerSubmitted) return;
