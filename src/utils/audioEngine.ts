@@ -324,10 +324,18 @@ class MultiInstrumentAudioEngine {
           } catch {
             // Oscillator may already have stopped.
           }
-          osc.disconnect();
         });
-        voice.gain.disconnect();
-        voice.filter.disconnect();
+
+        // Keep the nodes connected briefly so the 15ms fade can complete.
+        window.setTimeout(() => {
+          try {
+            voice.oscillators.forEach((osc) => osc.disconnect());
+            voice.gain.disconnect();
+            voice.filter.disconnect();
+          } catch {
+            // Nodes may already be disconnected.
+          }
+        }, 25);
       } catch {
         // Ignore nodes already stopped or disconnected.
       }
