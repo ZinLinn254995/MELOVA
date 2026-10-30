@@ -320,6 +320,24 @@ export function getGuitarChordVoicing(root: NoteName, chordType: ChordTypeId): G
       baseFret: f,
     };
   }
+  if (chordType === 'sus2') {
+    return {
+      root,
+      chordType,
+      frets: [f, f + 2, f + 4, f + 4, f, f],
+      fingers: [1, 2, 4, 4, 1, 1],
+      baseFret: f,
+    };
+  }
+  if (chordType === 'diminished') {
+    return {
+      root,
+      chordType,
+      frets: [f, f + 1, f + 2, f, -1, -1],
+      fingers: [1, 2, 3, 1, null, null],
+      baseFret: f,
+    };
+  }
   if (chordType === 'sus4') {
     return {
       root,
