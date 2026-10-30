@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   CalculatedChord,
   Language,
@@ -41,6 +41,11 @@ export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [viewMode, setViewMode] = useState<'chart' | 'full'>('chart');
   const [pluckedNote, setPluckedNote] = useState<string | null>(null);
+  const pluckedNoteTimer = useRef<number | null>(null);
+
+  useEffect(() => () => {
+    if (pluckedNoteTimer.current !== null) window.clearTimeout(pluckedNoteTimer.current);
+  }, []);
   const [isStrumming, setIsStrumming] = useState(false);
 
   const totalFrets = 15;
@@ -82,8 +87,10 @@ export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
     const key = `${stringIndex}-${fret}`;
     setPluckedNote(key);
     audioEngine.playNote(noteInfo.pitchClass, noteInfo.octave, 1.8, 'guitar');
-    setTimeout(() => {
+    if (pluckedNoteTimer.current !== null) window.clearTimeout(pluckedNoteTimer.current);
+    pluckedNoteTimer.current = window.setTimeout(() => {
       setPluckedNote(null);
+      pluckedNoteTimer.current = null;
     }, 300);
   };
 

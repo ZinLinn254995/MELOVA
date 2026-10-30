@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   CalculatedChord,
   Language,
@@ -32,6 +32,11 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [viewMode, setViewMode] = useState<'pattern' | 'full'>('pattern');
   const [pluckedNote, setPluckedNote] = useState<string | null>(null);
+  const pluckedNoteTimer = useRef<number | null>(null);
+
+  useEffect(() => () => {
+    if (pluckedNoteTimer.current !== null) window.clearTimeout(pluckedNoteTimer.current);
+  }, []);
   const [isGrooving, setIsGrooving] = useState(false);
   const [activeGrooveIndex, setActiveGrooveIndex] = useState<number | null>(null);
 
@@ -83,8 +88,10 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
     const key = `${stringIndex}-${fret}`;
     setPluckedNote(key);
     audioEngine.playNote(noteInfo.pitchClass, noteInfo.octave, 1.6, 'bass');
-    setTimeout(() => {
+    if (pluckedNoteTimer.current !== null) window.clearTimeout(pluckedNoteTimer.current);
+    pluckedNoteTimer.current = window.setTimeout(() => {
       setPluckedNote(null);
+      pluckedNoteTimer.current = null;
     }, 300);
   };
 
