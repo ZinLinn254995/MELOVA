@@ -176,7 +176,7 @@ export const BassFretboard: React.FC<BassFretboardProps> = ({
       {/* Interactive 4-String Bass Fretboard */}
       <div
         ref={scrollRef}
-        className="relative w-full max-w-full overflow-x-auto touch-pan-x overscroll-x-contain pb-4 pt-2 select-none scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900"
+        className="relative w-full max-w-full overflow-x-auto overscroll-x-contain pb-4 pt-2 select-none scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900"
       >
         <div
           className="relative min-w-[760px] bg-gradient-to-r from-stone-900 via-stone-850 to-stone-900 rounded-xl p-4 sm:p-5 border-2 border-stone-800 shadow-2xl"
