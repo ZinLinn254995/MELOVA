@@ -184,7 +184,7 @@ export const GuitarFretboard: React.FC<GuitarFretboardProps> = ({
       {/* Interactive Guitar Fretboard Diagram */}
       <div
         ref={scrollRef}
-        className="relative w-full max-w-full overflow-x-auto pb-4 pt-2 select-none touch-pan-x overscroll-x-contain scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900"
+        className="relative w-full max-w-full overflow-x-auto pb-4 pt-2 select-none overscroll-x-contain scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900"
       >
         <div
           className="relative min-w-[760px] bg-gradient-to-r from-amber-950/70 via-stone-900 to-amber-950/80 rounded-xl p-4 sm:p-5 border-2 border-stone-800 shadow-2xl"
