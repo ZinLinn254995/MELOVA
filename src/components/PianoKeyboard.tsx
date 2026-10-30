@@ -238,7 +238,7 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
       {/* Horizontal Scrollable Piano Keyboard Container */}
       <div
         ref={scrollContainerRef}
-        className="relative w-full max-w-full overflow-x-auto touch-pan-x overscroll-x-contain pb-4 pt-2 select-none scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900"
+        className="relative w-full max-w-full overflow-x-auto overscroll-x-contain pb-4 pt-2 select-none scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900"
       >
         <div
           className="relative mx-auto rounded-b-xl shadow-2xl bg-slate-950 p-2 sm:p-3 border-t-8 border-slate-950"
