@@ -24,6 +24,7 @@ import { BeginnerLessonPanel } from './components/BeginnerLessonPanel';
 import { LearningPath } from './components/LearningPath';
 import { PracticeStudio } from './components/PracticeStudio';
 import { ScalePractice } from './components/ScalePractice';
+import { ChordRecognition } from './components/ChordRecognition';
 import { ChordReferenceTable } from './components/ChordReferenceTable';
 import { PracticeMode } from './components/PracticeMode';
 import { Sparkles, Music, BookOpen, Layers } from 'lucide-react';
@@ -281,7 +282,12 @@ export default function App() {
           <ScalePractice instrument={selectedInstrument} lang={lang} />
         </section>
 
-        {/* 8. Chord Reference Tables (7 Natural Majors + All 12 Roots) */}
+        {/* 8. Chord sound recognition practice */}
+        <section id="chord-recognition-section" aria-label="Chord recognition practice">
+          <ChordRecognition instrument={selectedInstrument} lang={lang} />
+        </section>
+
+        {/* 9. Chord Reference Tables (7 Natural Majors + All 12 Roots) */}
         <section id="reference-section" aria-label="Chord reference tables">
           <ChordReferenceTable
             selectedInstrument={selectedInstrument}
@@ -292,7 +298,7 @@ export default function App() {
           />
         </section>
 
-        {/* 9. Practice & Self-Test Mode */}
+        {/* 10. Practice & Self-Test Mode */}
         <section id="practice-section" aria-label="Practice and self-test mode">
           <PracticeMode
             selectedInstrument={selectedInstrument}
