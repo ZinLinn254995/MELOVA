@@ -17,7 +17,7 @@ export function getFingerExerciseSequence(instrument: InstrumentType): FingerExe
       noteName,
       pitchClass: ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].indexOf(noteName),
       octave: 4,
-      finger: index < 5 ? index + 1 : 11 - index,
+      finger: index < 5 ? index + 1 : 10 - index,
     }));
   }
 
