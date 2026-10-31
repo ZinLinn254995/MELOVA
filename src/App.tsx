@@ -25,6 +25,7 @@ import { LearningPath } from './components/LearningPath';
 import { PracticeStudio } from './components/PracticeStudio';
 import { ScalePractice } from './components/ScalePractice';
 import { ChordRecognition } from './components/ChordRecognition';
+import { NoteRecognition } from './components/NoteRecognition';
 import { FingerExercises } from './components/FingerExercises';
 import { CustomPracticeRoutines } from './components/CustomPracticeRoutines';
 import { ChordReferenceTable } from './components/ChordReferenceTable';
@@ -282,6 +283,11 @@ export default function App() {
         {/* 7. Major and natural minor scale practice */}
         <section id="scale-practice-section" aria-label="Scale practice">
           <ScalePractice instrument={selectedInstrument} lang={lang} />
+        </section>
+
+        {/* Phase 3.1 Ear training: single-note recognition */}
+        <section id="ear-training-section" aria-label="Ear training note recognition">
+          <NoteRecognition instrument={selectedInstrument} lang={lang} />
         </section>
 
         {/* 8. Chord sound recognition practice */}
