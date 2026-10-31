@@ -27,6 +27,7 @@ import { ScalePractice } from './components/ScalePractice';
 import { ChordRecognition } from './components/ChordRecognition';
 import { NoteRecognition } from './components/NoteRecognition';
 import { IntervalRecognition } from './components/IntervalRecognition';
+import { MelodyRecognition } from './components/MelodyRecognition';
 import { FingerExercises } from './components/FingerExercises';
 import { CustomPracticeRoutines } from './components/CustomPracticeRoutines';
 import { ChordReferenceTable } from './components/ChordReferenceTable';
@@ -294,6 +295,11 @@ export default function App() {
         {/* Phase 3.2 Ear training: interval recognition */}
         <section id="interval-training-section" aria-label="Interval recognition practice">
           <IntervalRecognition instrument={selectedInstrument} lang={lang} />
+        </section>
+
+        {/* Phase 3.3 Ear training: melody recognition */}
+        <section id="melody-training-section" aria-label="Melody recognition practice">
+          <MelodyRecognition instrument={selectedInstrument} lang={lang} />
         </section>
 
         {/* 8. Chord sound recognition practice */}
