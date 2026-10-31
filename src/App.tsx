@@ -28,6 +28,7 @@ import { ChordRecognition } from './components/ChordRecognition';
 import { NoteRecognition } from './components/NoteRecognition';
 import { IntervalRecognition } from './components/IntervalRecognition';
 import { MelodyRecognition } from './components/MelodyRecognition';
+import { RelativePitch } from './components/RelativePitch';
 import { FingerExercises } from './components/FingerExercises';
 import { CustomPracticeRoutines } from './components/CustomPracticeRoutines';
 import { ChordReferenceTable } from './components/ChordReferenceTable';
@@ -300,6 +301,11 @@ export default function App() {
         {/* Phase 3.3 Ear training: melody recognition */}
         <section id="melody-training-section" aria-label="Melody recognition practice">
           <MelodyRecognition instrument={selectedInstrument} lang={lang} />
+        </section>
+
+        {/* Phase 3.4 Ear training: relative pitch */}
+        <section id="relative-pitch-training-section" aria-label="Relative pitch training">
+          <RelativePitch instrument={selectedInstrument} lang={lang} />
         </section>
 
         {/* 8. Chord sound recognition practice */}
