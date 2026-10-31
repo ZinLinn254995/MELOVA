@@ -3,6 +3,7 @@ import { CheckCircle2, Pause, Play, RotateCcw, Timer, Trophy } from 'lucide-reac
 import { InstrumentType, Language } from '../types/music';
 import { audioEngine } from '../utils/audioEngine';
 import { getFingerExerciseSequence } from '../utils/fingerExercises';
+import { getNextTrainingTempo, hasReachedTrainingGoal, SPEED_TRAINING_MAX_BPM, SPEED_TRAINING_START_BPM } from '../utils/speedTraining';
 
 interface FingerExercisesProps { instrument: InstrumentType; lang: Language; }
 
@@ -13,6 +14,10 @@ export const FingerExercises: React.FC<FingerExercisesProps> = ({ instrument, la
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [sessions, setSessions] = useState(0);
+  const [trainingMode, setTrainingMode] = useState<'steady' | 'speed'>('steady');
+  const [speedIncrement, setSpeedIncrement] = useState(5);
+  const [bestTempo, setBestTempo] = useState(0);
+  const [goalReached, setGoalReached] = useState(false);
   const timerRef = useRef<number | null>(null);
   const stepRef = useRef(0);
   const interval = 60000 / bpm;
@@ -31,6 +36,14 @@ export const FingerExercises: React.FC<FingerExercisesProps> = ({ instrument, la
       setCurrentStep(0);
       stepRef.current = 0;
       setSessions((value) => value + 1);
+      if (trainingMode === 'speed') {
+        setBestTempo((value) => Math.max(value, bpm));
+        if (hasReachedTrainingGoal(bpm)) {
+          setGoalReached(true);
+        } else {
+          setBpm((value) => getNextTrainingTempo(value, speedIncrement));
+        }
+      }
       timerRef.current = null;
       return;
     }
@@ -71,6 +84,14 @@ export const FingerExercises: React.FC<FingerExercisesProps> = ({ instrument, la
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bpm]);
 
+  const changeTrainingMode = (mode: 'steady' | 'speed') => {
+    reset();
+    setTrainingMode(mode);
+    setGoalReached(false);
+    setBestTempo(0);
+    setBpm(mode === 'speed' ? SPEED_TRAINING_START_BPM : 80);
+  };
+
   const title = instrument === 'piano'
     ? label('Five-finger pattern', 'လက်ငါးချောင်း လေ့ကျင့်ခန်း')
     : label('Chromatic 1–2–3–4', 'Chromatic ၁–၂–၃–၄ လေ့ကျင့်ခန်း');
@@ -104,18 +125,28 @@ export const FingerExercises: React.FC<FingerExercisesProps> = ({ instrument, la
           </div>
         </div>
 
+        <div className="grid grid-cols-2 gap-2 rounded-xl bg-slate-100 p-1 dark:bg-slate-800">
+          <button type="button" onClick={() => changeTrainingMode('steady')} aria-pressed={trainingMode === 'steady'} className={`rounded-lg px-3 py-2.5 text-xs font-bold transition-colors ${trainingMode === 'steady' ? 'bg-white text-amber-700 shadow-sm dark:bg-slate-700 dark:text-amber-300' : 'text-slate-500 dark:text-slate-400'}`}>{label('Steady practice','ပုံမှန်လေ့ကျင့်မှု')}</button>
+          <button type="button" onClick={() => changeTrainingMode('speed')} aria-pressed={trainingMode === 'speed'} className={`rounded-lg px-3 py-2.5 text-xs font-bold transition-colors ${trainingMode === 'speed' ? 'bg-white text-amber-700 shadow-sm dark:bg-slate-700 dark:text-amber-300' : 'text-slate-500 dark:text-slate-400'}`}>{label('Speed challenge','အမြန်နှုန်း စိန်ခေါ်မှု')}</button>
+        </div>
+
+        {trainingMode === 'speed' && <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50/70 p-3 dark:border-amber-900 dark:bg-amber-950/20">
+          <div><p className="text-xs font-bold text-amber-900 dark:text-amber-200">{label('Increase after each completed round','တစ်ပတ်ပြီးတိုင်း အမြန်နှုန်းတိုးမည်')}</p><p className="mt-1 text-[10px] text-amber-700 dark:text-amber-300">{label('Goal: 160 BPM','ပန်းတိုင်: 160 BPM')}</p></div>
+          <div className="flex gap-1.5">{[5, 10].map((step) => <button key={step} type="button" onClick={() => setSpeedIncrement(step)} aria-pressed={speedIncrement === step} className={`rounded-lg border px-3 py-2 text-xs font-bold ${speedIncrement === step ? 'border-amber-500 bg-amber-600 text-white' : 'border-amber-200 bg-white text-amber-800 dark:border-amber-800 dark:bg-slate-900 dark:text-amber-200'}`}>+{step} BPM</button>)}</div>
+        </div>}
+
         <div className="rounded-xl bg-slate-50 p-3 dark:bg-slate-800">
           <div className="flex items-center justify-between gap-3">
             <label htmlFor="finger-exercise-bpm" className="flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-300"><Timer className="h-4 w-4" />BPM</label>
             <span className="text-lg font-black tabular-nums text-amber-700 dark:text-amber-300">{bpm}</span>
           </div>
-          <input id="finger-exercise-bpm" aria-label="Exercise tempo in beats per minute" type="range" min="40" max="160" step="5" value={bpm} onChange={(event) => setBpm(Number(event.target.value))} className="mt-2 w-full accent-amber-600" />
-          <div className="flex justify-between text-[10px] text-slate-400"><span>40 BPM</span><span>160 BPM</span></div>
+          <input id="finger-exercise-bpm" aria-label="Exercise tempo in beats per minute" type="range" min={trainingMode === 'speed' ? SPEED_TRAINING_START_BPM : 40} max={SPEED_TRAINING_MAX_BPM} step="5" value={bpm} disabled={trainingMode === 'speed'} onChange={(event) => setBpm(Number(event.target.value))} className="mt-2 w-full accent-amber-600" />
+          <div className="flex justify-between text-[10px] text-slate-400"><span>{trainingMode === 'speed' ? SPEED_TRAINING_START_BPM : 40} BPM</span><span>{SPEED_TRAINING_MAX_BPM} BPM</span></div>
         </div>
 
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           <div className="rounded-xl bg-amber-50 p-3 dark:bg-amber-950/20"><p className="text-[10px] font-semibold text-amber-700 dark:text-amber-300">{label('Current step','လက်ရှိအဆင့်')}</p><p className="mt-1 text-2xl font-black tabular-nums text-amber-950 dark:text-amber-100">{isPlaying ? currentStep + 1 : currentStep === 0 ? '—' : currentStep + 1}<span className="ml-1 text-xs font-semibold text-amber-700 dark:text-amber-300">/ {sequence.length}</span></p></div>
-          <div className="rounded-xl bg-slate-100 p-3 dark:bg-slate-800"><p className="text-[10px] font-semibold text-slate-500">{label('Next note','နောက် Note')}</p><p className="mt-1 text-2xl font-black text-slate-900 dark:text-white">{sequence[currentStep]?.noteName ?? '—'}</p></div>
+          <div className="rounded-xl bg-slate-100 p-3 dark:bg-slate-800"><p className="text-[10px] font-semibold text-slate-500">{label('Current note','လက်ရှိ Note')}</p><p className="mt-1 text-2xl font-black text-slate-900 dark:text-white">{sequence[currentStep]?.noteName ?? '—'}</p></div>
           <div className="col-span-2 rounded-xl bg-slate-100 p-3 dark:bg-slate-800 sm:col-span-1"><p className="text-[10px] font-semibold text-slate-500">{label('Finger','လက်ချောင်း')}</p><p className="mt-1 text-2xl font-black text-slate-900 dark:text-white">{sequence[currentStep]?.finger ?? '—'}</p></div>
         </div>
 
@@ -138,6 +169,8 @@ export const FingerExercises: React.FC<FingerExercisesProps> = ({ instrument, la
           <button type="button" onClick={reset} className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-600 dark:border-slate-700 dark:text-slate-300"><RotateCcw className="h-4 w-4" />{label('Reset','ပြန်စရန်')}</button>
         </div>
 
+        {trainingMode === 'speed' && bestTempo > 0 && <p className="rounded-xl bg-slate-50 p-3 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{label('Best completed tempo','အမြင့်ဆုံးပြီးမြောက်ခဲ့သော BPM')}: <strong className="text-amber-700 dark:text-amber-300">{bestTempo} BPM</strong></p>}
+        {trainingMode === 'speed' && goalReached && <p className="flex items-center gap-2 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300"><Trophy className="h-4 w-4" />{label('Speed goal reached! Excellent control.','အမြန်နှုန်းပန်းတိုင် ပြည့်ပါပြီ။ အလွန်ကောင်းပါတယ်။')}</p>}
         {sessions > 0 && !isPlaying && currentStep === 0 && <p className="flex items-center gap-2 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300"><CheckCircle2 className="h-4 w-4" />{label('Exercise completed! Keep your movements relaxed and even.', 'လေ့ကျင့်ခန်းပြီးပါပြီ။ လက်လှုပ်ရှားမှုကို ဖြေလျှော့ပြီး ညီညာစွာ ဆက်လေ့ကျင့်ပါ။')}</p>}
       </div>
     </section>
