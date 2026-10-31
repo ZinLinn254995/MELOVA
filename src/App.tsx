@@ -25,6 +25,7 @@ import { LearningPath } from './components/LearningPath';
 import { PracticeStudio } from './components/PracticeStudio';
 import { ScalePractice } from './components/ScalePractice';
 import { ChordRecognition } from './components/ChordRecognition';
+import { FingerExercises } from './components/FingerExercises';
 import { ChordReferenceTable } from './components/ChordReferenceTable';
 import { PracticeMode } from './components/PracticeMode';
 import { Sparkles, Music, BookOpen, Layers } from 'lucide-react';
@@ -287,7 +288,12 @@ export default function App() {
           <ChordRecognition instrument={selectedInstrument} lang={lang} />
         </section>
 
-        {/* 9. Chord Reference Tables (7 Natural Majors + All 12 Roots) */}
+        {/* 9. Instrument-specific finger dexterity exercises */}
+        <section id="finger-exercises-section" aria-label="Finger exercises">
+          <FingerExercises instrument={selectedInstrument} lang={lang} />
+        </section>
+
+        {/* 10. Chord Reference Tables (7 Natural Majors + All 12 Roots) */}
         <section id="reference-section" aria-label="Chord reference tables">
           <ChordReferenceTable
             selectedInstrument={selectedInstrument}
@@ -298,7 +304,7 @@ export default function App() {
           />
         </section>
 
-        {/* 10. Practice & Self-Test Mode */}
+        {/* 11. Practice & Self-Test Mode */}
         <section id="practice-section" aria-label="Practice and self-test mode">
           <PracticeMode
             selectedInstrument={selectedInstrument}
