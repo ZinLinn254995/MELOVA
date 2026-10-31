@@ -8,7 +8,6 @@ import {
 } from '../utils/intervalRecognition';
 
 interface IntervalRecognitionProps { instrument: InstrumentType; lang: Language; }
-const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 export const IntervalRecognition: React.FC<IntervalRecognitionProps> = ({ instrument, lang }) => {
   const my = lang === 'my';
